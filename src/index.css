@@ -1,0 +1,12 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Aby upewnić się, że `body` i `html` rozciągają się na całą wysokość ekranu */
+  overflow: hidden;
+}
+iframe {
+  border: 0;
+}
+#root {
+  height: 100%; /* Gwarantuje, że główny kontener React zajmie całą przestrzeń */
+}

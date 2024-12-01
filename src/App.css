@@ -1,0 +1,30 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app__search {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  z-index: 1000;
+}
+
+.app__content {
+  display: flex;
+  flex: 1;
+}
+
+.app__map {
+  flex: 1;
+  position: relative;
+}
+
+.app__history {
+  width: 300px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+  overflow-y: auto;
+}
