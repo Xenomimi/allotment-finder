@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: #b2b2b2;
+}
+
+.app__search {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(25, 28, 29);
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  z-index: 1000;
+  text-align: center;
+}
+
+.app__content {
+  display: flex;
+  flex: 1;
+}
+
+.app__map {
+  flex: 1;
+  position: relative;
+}
+
+.app__history {
+  min-width: 300px;
+  background-color: rgb(25, 28, 29);;
+  overflow-y: auto;
+}
+
+
+/* Styl formularza */
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+}
+
+/* Styl pola tekstowego */
+form input[type="text"] {
+  padding: 10px 15px;
+  width: 300px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+form input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* Styl przycisku */
+form button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+form button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+}
+
+form button:active {
+  background-color: #003f7f;
+  box-shadow: none;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createLocation } from '../../api/locationService';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -7,10 +8,13 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
       onSearch(query);
+      await createLocation(query);
       setQuery('');
     }
   };
@@ -22,9 +26,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Szukaj adresu..."
-        style={{ padding: '5px', marginRight: '5px' }}
       />
-      <button type="submit" style={{ padding: '5px' }}>
+      <button type="submit">
         Szukaj
       </button>
     </form>

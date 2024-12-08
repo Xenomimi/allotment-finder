@@ -1,24 +1,17 @@
-# Logs
-logs
+# Ignoruj foldery node_modules w obu częściach projektu
+/backend/node_modules
+/frontend/node_modules
+
+# Ignoruj pliki tymczasowe i cache
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+*.env
+*.env.local
+*.env.*.local
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# Opcjonalnie: Ignoruj pliki build w frontend (jeśli istnieją)
+frontend/build/
+backend/build/
+
+# Jeśli korzystasz z narzędzi do testowania, możesz też dodać ich pliki
+coverage/

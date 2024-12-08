@@ -25,8 +25,11 @@ const Map: React.FC = () => {
         "useMenu": false
     };
 
-    (window as any).ILITEAPI.init(mapConfig);
-  }, []);
+  // Inicjalizacja mapy z callbackiem
+  (window as any).ILITEAPI.init(mapConfig, () => {
+    console.log("Mapa załadowana");
+  });
+}, []);
 
   
   return (
