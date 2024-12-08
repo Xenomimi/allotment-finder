@@ -22,7 +22,7 @@ app.listen(PORT, ()=>{
 
 const connectDb = async() => {
     try{
-        await mongoose.connect('mongodb+srv://listek:elozelo@locations.e4flo.mongodb.net/?retryWrites=true&w=majority&appName=locations');
+        await mongoose.connect('__TUTAJ_LINK_DO_BAZY_MONGODB__');
         console.log("db connected successfuly! ");
     } catch (error) {
         console.error("something went wrong with db connection ");
