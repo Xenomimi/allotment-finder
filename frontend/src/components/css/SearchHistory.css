@@ -2,7 +2,7 @@
   text-align: center;
   
   /* Dodaj maksymalną wysokość i przewijanie */
-  max-height: 100vh;
+  height: calc(100vh - 107px);
   overflow-y: auto;
 }
 
