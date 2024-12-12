@@ -4,9 +4,15 @@ import Map from './components/Map';
 import SearchHistory from './components/SearchHistory';
 import SearchBar from './components/SearchBar';
 import Papa from 'papaparse';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { addMultipleLocations } from '../redux/locationSlice';
 
 const App: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  
+  // Pobierz istniejące lokalizacje z Redux
+  const locations = useAppSelector((state) => state.locations.locations);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -15,10 +21,10 @@ const App: React.FC = () => {
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
   
     if (fileExtension === 'csv') {
-      // Parsowanie pliku CSV przy użyciu papaparse
       Papa.parse<string[]>(file, {
         complete: (results: Papa.ParseResult<string[]>) => {
-          const addresses = results.data.flat().filter((row) => row.trim());
+          let addresses = results.data.flat().map(addr => addr.trim()).filter(Boolean);
+          addresses = Array.from(new Set(addresses));
           searchMultipleAddresses(addresses);
         },
         error: (err: Error) => {
@@ -26,11 +32,11 @@ const App: React.FC = () => {
         },
       });
     } else if (fileExtension === 'txt') {
-      // Odczyt pliku TXT
       const reader = new FileReader();
       reader.onload = (e) => {
-        const content = e.target?.result as string;
-        const addresses = content.split('\n').map((line) => line.trim()).filter(Boolean);
+        let content = e.target?.result as string;
+        let addresses = content.split('\n').map((line) => line.trim()).filter(Boolean);
+        addresses = Array.from(new Set(addresses));
         searchMultipleAddresses(addresses);
       };
       reader.readAsText(file);
@@ -38,49 +44,45 @@ const App: React.FC = () => {
       console.error('Nieobsługiwany format pliku. Użyj pliku CSV lub TXT.');
     }
   };
-  
 
-  const searchMultipleAddresses = (addresses: string[]) => {
-    // Tworzenie tablicy obiektów dla searchManyObjects
-    const searchObjects = addresses
-      .filter((address) => address.trim()) // Usunięcie pustych adresów
-      .map((address) => ({
-        search: address, // Adres
-        opts: {
-          title: address, // Tytuł dymka
-          show: true, // Wyświetlenie dymka
-          layerDesc: "geopard.Adresy", // Możesz dostosować identyfikator warstwy
-        },
-      }));
-  
-    if (searchObjects.length > 0) {
-      // Wywołanie searchManyObjects
-      (window as any).ILITEAPI.searchManyObjects(searchObjects);
-  
-      // Aktualizacja historii wyszukiwań
-      setSearchHistory((prev) => {
-        const newHistory = addresses.filter(
-          (address) => address.trim() && !prev.includes(address)
-        );
-        return [...newHistory, ...prev];
-      });
-    }
-  };
-  
   const handleSearch = (query: string) => {
-    setSearchHistory((poprzednie) => {
-      // Sprawdź, czy adres już istnieje w historii
-      if (poprzednie.includes(query)) {
-        return poprzednie; // Nie dodawaj duplikatu
+    setSearchHistory((prev) => {
+      if (prev.includes(query)) {
+        return prev;
       }
-      return [query, ...poprzednie]; // Dodaj adres na początek listy
+      return [query, ...prev];
     });
   
-    // Wyszukaj adres na mapie
     (window as any).ILITEAPI.searchAddress(query, {
       title: query,
       show: true,
     });
+  };
+
+  const searchMultipleAddresses = (addresses: string[]) => {
+    // Zbierz aktualnie znane adresy z historii i ze stanu Redux
+    const knownAddresses = new Set([...searchHistory, ...locations.map(loc => loc.locationName)]);
+    
+    // Wyfiltrowanie tylko tych adresów, które nie istnieją jeszcze w "knownAddresses"
+    const newAddresses = addresses.filter((address) => !knownAddresses.has(address));
+
+    if (newAddresses.length === 0) {
+      return;
+    }
+
+    setSearchHistory((prev) => [...newAddresses, ...prev]);
+
+    const searchObjects = newAddresses.map((address) => ({
+      search: address,
+      opts: {
+        title: address,
+        show: true,
+        layerDesc: "geopard.Adresy"
+      },
+    }));
+    
+    (window as any).ILITEAPI.searchManyObjects(searchObjects);
+    dispatch(addMultipleLocations(newAddresses));
   };
 
   const handleSelectHistoryItem = (item: string) => {
@@ -89,17 +91,15 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
-      {/* Sekcja nad mapą */}
       <div className="app__search">
         <h1>Allotment Finder</h1>
         <SearchBar onSearch={handleSearch} />
         <div>
-          <label style={{margin: 10}}>Wyszkiwanie wielu adresów:</label>
+          <label style={{margin: 10}}>Wyszukiwanie wielu adresów:</label>
           <input type="file" accept=".csv, .txt" onChange={handleFileUpload} name="multipleSearch" />
         </div>
       </div>
       
-      {/* Sekcja mapy i historii wyszukiwań */}
       <div className="app__content">
         <div className="app__map">
           <Map />

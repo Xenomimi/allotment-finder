@@ -54,6 +54,22 @@ export const removeLocation = createAsyncThunk<string, string>(
     }
 );
 
+export const addMultipleLocations = createAsyncThunk<Location[], string[]>(
+    'locations/addMultipleLocations',
+    async (addresses, thunkAPI) => {
+      try {
+        const created = [];
+        for (const address of addresses) {
+          const newLocation = await createLocation(address); // API do tworzenia lokalizacji
+          created.push(newLocation);
+        }
+        return created;
+      } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  );
+
 
 const locationSlice = createSlice({
     name: "locations",
@@ -78,7 +94,18 @@ const locationSlice = createSlice({
         })
         .addCase(removeLocation.fulfilled, (state, action : PayloadAction<string>)=>{
             state.locations = state.locations.filter((loc)=>loc._id !== action.payload);
-        });
+        })
+        .addCase(addMultipleLocations.fulfilled, (state, action: PayloadAction<Location[]>) => {
+            const newLocations = action.payload;
+            const existingNames = new Set(state.locations.map(loc => loc.locationName));
+          
+            // Filtrowanie po stronie reduktora, aby uniknąć wprowadzania duplikatów do stanu
+            const filteredLocations = newLocations.filter(loc => !existingNames.has(loc.locationName));
+          
+            // Dodajemy tylko nowe, unikalne lokalizacje
+            state.locations = [...state.locations, ...filteredLocations];
+          });
+        
     }
 })
 

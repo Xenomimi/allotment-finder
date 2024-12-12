@@ -1,56 +1,59 @@
 .search-history {
-    text-align: center;
-  }
+  text-align: center;
   
-  .search-history__list {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-  }
-  
-  .search-history__item {
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .search-history__buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .search-history__button {
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .search-history__button--select {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .search-history__button--select:hover {
-    background-color: #0056b3;
-    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
-  }
-  
-  .search-history__button--delete {
-    background-color: red;
-    color: white;
-  }
-  
-  .search-history__button--delete:hover {
-    background-color: #cc0000;
-    box-shadow: 0 4px 8px rgba(204, 0, 0, 0.3);
-  }
-  
+  /* Dodaj maksymalną wysokość i przewijanie */
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.search-history__list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+.search-history__item {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-history__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.search-history__button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-history__button--select {
+  background-color: #007bff;
+  color: white;
+}
+
+.search-history__button--select:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+}
+
+.search-history__button--delete {
+  background-color: red;
+  color: white;
+}
+
+.search-history__button--delete:hover {
+  background-color: #cc0000;
+  box-shadow: 0 4px 8px rgba(204, 0, 0, 0.3);
+}
